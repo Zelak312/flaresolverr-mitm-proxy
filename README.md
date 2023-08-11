@@ -42,11 +42,13 @@ To set the Authorization header value to `mytoken`. To add multiple headers, cha
 
 #### POST Request:
 
-For POST requests, you would add headers within the postData parameter provided by Flaresolverr.
+For POST requests, you would add headers within the postData parameter provided by Flaresolverr and follow the same syntax.
 
 ### Sending JSON in POST Request
 
 To send a JSON payload in a POST request, utilize the `$post$` keyword within the postData parameter.
+
+It needs to be set to `true` it will transform the parameters to JSON
 
 **Example**:
 

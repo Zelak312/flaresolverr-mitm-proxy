@@ -77,7 +77,17 @@ docker compose up -d
 2. Make a request to Flaresolverr:
 
 ```bash
-curl -L -X POST 'http://localhost:8191/v1' -H 'Content-Type: application/json' --data-raw '{ "cmd": "request.get", "url":"https://www.crunchyroll.com/", "maxTimeout": 60000, "proxy": { "url": "http://flaresolverr-mitm-proxy:8080" }, "postData": "$post$=true&test=nice&array[]=lol&$headers$[]=test:header&nested.yeet=oof" }'
+curl -L -X POST 'http://localhost:8191/v1' \
+     -H 'Content-Type: application/json' \
+     --data-raw '{
+        "cmd": "request.post",
+        "url": "https://httpbin.org/post",
+        "maxTimeout": 60000,
+        "proxy": {
+            "url": "http://flaresolverr-mitm-proxy:8080"
+        },
+        "postData": "$post$=true&test=nice&array[]=lol&$headers$[]=test:header&nested.yeet=oof"
+     }'
 ```
 
 The response would look something like:
@@ -86,16 +96,62 @@ The response would look something like:
 {
     "status": "ok",
     "message": "Challenge not detected!",
+    "startTimestamp": 1691721660615,
+    "endTimestamp": 1691721665638,
+    "version": "3.3.2",
     "solution": {
         "url": "https://httpbin.org/post",
         "status": 200,
         "cookies": [],
         "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
         "headers": {},
-        "response": "<html><head><meta name=\"color-scheme\" content=\"light dark\"></head><body><pre style=\"word-wrap: break-word; white-space: pre-wrap;\">{\n  \"args\": {}, \n  \"data\": \"{\\\"test\\\": \\\"nice\\\", \\\"array\\\": [\\\"lol\\\"], \\\"nested\\\": {\\\"yeet\\\": \\\"oof\\\"}}\", \n  \"files\": {}, \n  \"form\": {}, \n  \"headers\": {\n    \"Accept\": \"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\", \n    \"Accept-Encoding\": \"gzip, deflate, br\", \n    \"Accept-Language\": \"en-US,en;q=0.9\", \n    \"Cache-Control\": \"max-age=0\", \n    \"Content-Length\": \"61\", \n    \"Content-Type\": \"application/json\", \n    \"Host\": \"httpbin.org\", \n    \"Origin\": \"null\", \n    \"Sec-Ch-Ua\": \"\\\"Chromium\\\";v=\\\"115\\\", \\\"Not/A)Brand\\\";v=\\\"99\\\"\", \n    \"Sec-Ch-Ua-Mobile\": \"?0\", \n    \"Sec-Ch-Ua-Platform\": \"\\\"Linux\\\"\", \n    \"Sec-Fetch-Dest\": \"document\", \n    \"Sec-Fetch-Mode\": \"navigate\", \n    \"Sec-Fetch-Site\": \"cross-site\", \n    \"Test\": \"header\", \n    \"Upgrade-Insecure-Requests\": \"1\", \n    \"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36\", \n    \"X-Amzn-Trace-Id\": \"Root=1-64d59fbf-3a7a7e743a2c47bb5ab00d3b\"\n  }, \n  \"json\": {\n    \"array\": [\n      \"lol\"\n    ], \n    \"nested\": {\n      \"yeet\": \"oof\"\n    }, \n    \"test\": \"nice\"\n  }, \n  \"url\": \"https://httpbin.org/post\"\n}\n</pre></body></html>"
-    },
-    "startTimestamp": 1691721660615,
-    "endTimestamp": 1691721665638,
-    "version": "3.3.2"
+        "response": `
+            <html>
+            <head>
+                <meta name="color-scheme" content="light dark">
+            </head>
+            <body>
+                <pre style="word-wrap: break-word; white-space: pre-wrap;">
+                    {
+                        "args": {},
+                        "data": "{\\"test\\": \\"nice\\", \\"array\\": [\\"lol\\"], \\"nested\\": {\\"yeet\\": \\"oof\\"}}",
+                        "files": {},
+                        "form": {},
+                        "headers": {
+                            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+                            "Accept-Encoding": "gzip, deflate, br",
+                            "Accept-Language": "en-US,en;q=0.9",
+                            "Cache-Control": "max-age=0",
+                            "Content-Length": "61",
+                            "Content-Type": "application/json",
+                            "Host": "httpbin.org",
+                            "Origin": "null",
+                            "Sec-Ch-Ua": "\\"Chromium\\";v=\\"115\\", \\"Not/A)Brand\\";v=\\"99\\"",
+                            "Sec-Ch-Ua-Mobile": "?0",
+                            "Sec-Ch-Ua-Platform": "\\"Linux\\"",
+                            "Sec-Fetch-Dest": "document",
+                            "Sec-Fetch-Mode": "navigate",
+                            "Sec-Fetch-Site": "cross-site",
+                            "Test": "header",
+                            "Upgrade-Insecure-Requests": "1",
+                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
+                            "X-Amzn-Trace-Id": "Root=1-64d59fbf-3a7a7e743a2c47bb5ab00d3b"
+                        },
+                        "json": {
+                            "array": [
+                                "lol"
+                            ],
+                            "nested": {
+                                "yeet": "oof"
+                            },
+                            "test": "nice"
+                        },
+                        "url": "https://httpbin.org/post"
+                    }
+                </pre>
+            </body>
+            </html>
+        `
+    }
 }
 ```

@@ -2,9 +2,9 @@
 version: "2.1"
 services:
   flaresolverr-mitm-proxy:
-    build: 
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/zelak312/flaresolverr-mitm-proxy:v1.0.0-beta
+    container_name: flaresolverr-mitm-proxy
+    restart: unless-stopped
 
   flaresolverr:
     # DockerHub mirror flaresolverr/flaresolverr:latest

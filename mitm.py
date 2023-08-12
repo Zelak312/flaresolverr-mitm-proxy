@@ -1,72 +1,79 @@
 # addon_example.py
+import os
 import json
+import base64
 import urllib.parse
 from mitmproxy import ctx
 
-
-def set_nested_item(dataDict, mapList, value):
-    for k in mapList[:-1]:
-        dataDict = dataDict.setdefault(k, {})
-    dataDict[mapList[-1]] = value
+special_prefix_token = os.environ.get("SPECIAL_PREFIX_TOKEN", "$$")
+header_split_token = os.environ.get("HEADER_SPLIT_TOKEN", ":")
+header_token = f"{special_prefix_token}headers[]"
+post_token = f"{special_prefix_token}post"
 
 
 class FlaresolverrProxy:
-    def request(self, flow):
-        content_type = flow.request.headers.get("Content-Type", "")
-
-        headers = {}
-        if flow.request.method == "GET":
-            ctx.log.debug("Checking request for GET")
-            form_data = flow.request.query
-            if "$headers$[]" in form_data:
-                ctx.log.debug("Found $headers$[] in query")
-                # Remove the $headers$[] key
-                headers = form_data.pop("$headers$[]")
-                # Remove the $headers$[] key from the query
-                flow.request.query.pop("$headers$[]")
-        elif "application/x-www-form-urlencoded" in content_type and flow.request.method == "POST":
-            request_txt = flow.request.get_text().strip()
-            if request_txt == "":
-                return
-
-            ctx.log.debug("Checking request for POST")
-            try:
-                form_data = urllib.parse.parse_qs(request_txt)
-            except Exception as e:
-                ctx.log.error(f"Failed to parse form data: {e}")
-                return
-
-            if "$headers$[]" in form_data:
-                ctx.log.debug("Found $headers$[] in form data")
-                # Remove the $headers$ key
-                headers = form_data.pop("$headers$[]")
-
-            if "$post$" in form_data and form_data["$post$"][0] == "true":
-                # Remove the $post$ key
-                form_data.pop("$post$")
-
-                # Convert the form data to a nested dict
-                nested_data = {}
-                for key, value in form_data.items():
-                    if key.endswith("[]"):
-                        key = key[:-2]
-                        set_nested_item(nested_data, key.split('.'), value)
-                    else:
-                        set_nested_item(nested_data, key.split('.'), value[0])
-
-                # Set the content type to JSON and update the request body
-                flow.request.headers["Content-Type"] = "application/json"
-                flow.request.set_text(json.dumps(nested_data))
-
-        if len(headers) > 0:
+    def handle_headers(self, flow):
+        ctx.log.info("Handling headers")
+        if header_token in flow.request.query:
+            ctx.log.info(f"Found {header_token} in query")
+            headers = flow.request.query.get_all(header_token)
             for header in headers:
-                if not ":" in header:
+                if not header_split_token in header:
                     continue
 
-                [key, value] = header.split(":")
-                ctx.log.debug(f"Setting header {key} to {value}")
-                print(f"Setting header {key} to {value}")
+                [key, value] = header.split(header_split_token, 1)
+                ctx.log.info(f"Setting header {key} to {value}")
                 flow.request.headers[key] = value
+
+    def handle_post_json(self, flow):
+        ctx.log.info("Handling post json")
+        # Parse the post data
+        try:
+            form_data = urllib.parse.parse_qs(flow.request.get_text())
+        except Exception as e:
+            ctx.log.error(f"Failed to parse form data: {e}")
+            return
+
+        ctx.log.info(f"Request text: {form_data}")
+        if post_token in form_data:
+            ctx.log.info(f"Found {post_token} in query")
+
+            # Check if the form data contains the post token
+            if not post_token in form_data:
+                return
+
+            # Try to decode the post data
+            try:
+                # Ensure the string is correctly padded
+                missing_padding = len(form_data[post_token][0]) % 4
+                if missing_padding:
+                    form_data[post_token][0] += '=' * (4 - missing_padding)
+
+                decoded_string = base64.b64decode(
+                    form_data[post_token][0]).decode("utf-8")
+            except Exception as e:
+                ctx.log.error(f"Failed to decode post data: {e}")
+                return
+
+            # Try to parse the post data as JSON
+            try:
+                post_data = json.loads(decoded_string)
+            except Exception as e:
+                ctx.log.error(f"Failed to parse post data: {e}")
+                return
+
+            # Change header to JSON
+            flow.request.headers["Content-Type"] = "application/json"
+            # Set the JSON data as the request body
+            flow.request.set_text(json.dumps(post_data))
+
+    def request(self, flow):
+        ctx.log.info("Handling request")
+        # Handle headers
+        self.handle_headers(flow)
+        # Handle post json if needed
+        if flow.request.method == "POST":
+            self.handle_post_json(flow)
 
 
 addons = [

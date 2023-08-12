@@ -28,9 +28,7 @@ There are multiple ways to set up and run the Flaresolverr Mitm Proxy:
 
 ### Working with Headers
 
-#### GET Request:
-
-Headers in GET requests are set via special query parameters.
+Headers set via special query parameters.
 
 **Example**:
 
@@ -40,21 +38,17 @@ To set the Authorization header value to `mytoken`. To add multiple headers, cha
 
 `https://google.com?$headers$[]=Authorization:mytoken&$headers$[]=otherone:othervalue`
 
-#### POST Request:
-
-For POST requests, you would add headers within the postData parameter provided by Flaresolverr and follow the same syntax.
+This also applies for POST requests (They are also in the query parameters)
 
 ### Sending JSON in POST Request
 
-To send a JSON payload in a POST request, utilize the `$post$` keyword within the postData parameter.
+To send a JSON payload in a POST request, utilize the `$$post` keyword within the postData parameter.
 
-It needs to be set to `true` it will transform the parameters to JSON
+It takes a base64 encoded JSON string (base64 is needed because of how FlareSolverr works)
 
 **Example**:
 
-`$post$=true&test=nice&array[]=lol&$headers$[]=test:header&nested.yeet=oof`
-
-This would be transformed to:
+For sending this JSON
 
 ```json
 {
@@ -62,9 +56,34 @@ This would be transformed to:
     "array": ["lol"],
     "nested": {
         "yeet": "oof"
-    }
+    },
+    "number": 4
 }
 ```
+
+You will first need to base64 it.
+
+The base64 representation of this JSON payload is
+
+```
+eyJ0ZXN0IjoibmljZSIsImFycmF5IjpbImxvbCJdLCJuZXN0ZWQiOnsieWVldCI6ICJvb2YifSwibnVtYmVyIjo0fQ==
+```
+
+You then need to pass it in the `$$post` parameter from the postData of FlareSolverr
+
+```
+$$post=eyJ0ZXN0IjoibmljZSIsImFycmF5IjpbImxvbCJdLCJuZXN0ZWQiOnsieWVldCI6ICJvb2YifSwibnVtYmVyIjo0fQ==
+```
+
+## Environment variables
+
+If you need to change `$$headers[]` and `$$post` for whatever reasons you are able to do so with <br>
+SPECIAL_PREFIX_TOKEN, the default is `$$` and if changed it will change the prefix<br>
+
+It is also possible to change the split token for headers<br>
+HEADER_SPLIT_TOKEN, the default is `:` for `Authorization:mytoken` and can be changed
+
+These can be changed in Docker and Docker compose
 
 ## Practical Example
 
@@ -79,16 +98,16 @@ docker compose up -d
 2. Make a request to Flaresolverr:
 
 ```bash
-curl -L -X POST 'http://localhost:8191/v1' \
-     -H 'Content-Type: application/json' \
-     --data-raw '{
+curl -L -X POST 'http://localhost:8191/v1'
+    -H 'Content-Type: application/json'
+    --data-raw '{
         "cmd": "request.post",
-        "url": "https://httpbin.org/post",
+        "url": "https://httpbin.org/post?$$headers[]=Authorization:mytoken",
         "maxTimeout": 60000,
         "proxy": {
-            "url": "http://flaresolverr-mitm-proxy:8080"
+            "url": "flaresolverr-mitm-proxy:8080"
         },
-        "postData": "$post$=true&test=nice&array[]=lol&$headers$[]=test:header&nested.yeet=oof"
+        "postData": "$$post=eyJ0ZXN0IjoibmljZSIsImFycmF5IjpbImxvbCJdLCJuZXN0ZWQiOnsieWVldCI6ICJvb2YifSwibnVtYmVyIjo0fQ=="
      }'
 ```
 
@@ -102,7 +121,7 @@ The response would look something like:
     "endTimestamp": 1691721665638,
     "version": "3.3.2",
     "solution": {
-        "url": "https://httpbin.org/post",
+        "url": "https://httpbin.org/post?$$headers[]=Authorization:mytoken",
         "status": 200,
         "cookies": [],
         "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
@@ -134,21 +153,20 @@ The response would look something like:
                             "Sec-Fetch-Dest": "document",
                             "Sec-Fetch-Mode": "navigate",
                             "Sec-Fetch-Site": "cross-site",
-                            "Test": "header",
+                            "Authorization": "mytoken",
                             "Upgrade-Insecure-Requests": "1",
                             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
                             "X-Amzn-Trace-Id": "Root=1-64d59fbf-3a7a7e743a2c47bb5ab00d3b"
                         },
                         "json": {
-                            "array": [
-                                "lol"
-                            ],
+                            "test": "nice",
+                            "array": ["lol"],
                             "nested": {
                                 "yeet": "oof"
                             },
-                            "test": "nice"
+                            "number": 4
                         },
-                        "url": "https://httpbin.org/post"
+                        "url": "https://httpbin.org/post?$$headers[]=Authorization:mytoken"
                     }
                 </pre>
             </body>

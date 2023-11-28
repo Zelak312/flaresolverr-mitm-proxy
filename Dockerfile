@@ -11,9 +11,6 @@ COPY requirements.txt ./
 RUN apt-get update && apt-get install -y build-essential
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install mitmproxy
-RUN pip install mitmproxy
-
 # Copy the current directory contents into the container
 COPY mitm.py ./
 

@@ -10,7 +10,7 @@ echo "Preparing $1..."
 # update the version
 msg="# managed by release.sh"
 # update the changelog
-npx git-cliff --config cliff.toml --tag "$1" 1f0fd6a..HEAD > CHANGELOG.md
+npx git-cliff --config cliff.toml --tag "$1" 421d125..HEAD > CHANGELOG.md
 git add -A && git commit -m "chore(release): prepare for $1"
 git show
 # generate a changelog for the tag message

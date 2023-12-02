@@ -32,11 +32,11 @@ Headers set via special query parameters.
 
 **Example**:
 
-`$headers$[]=Authorization:mytoken`
+`$$headers[]=Authorization:mytoken`
 
 To set the Authorization header value to `mytoken`. To add multiple headers, chain them:
 
-`https://google.com?$headers$[]=Authorization:mytoken&$headers$[]=otherone:othervalue`
+`https://google.com?$$headers[]=Authorization:mytoken&$$headers[]=otherone:othervalue`
 
 This also applies for POST requests (They are also in the query parameters)
 

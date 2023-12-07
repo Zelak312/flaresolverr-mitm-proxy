@@ -15,13 +15,13 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v1
+              uses: docker/setup-buildx-action@v3
 
             - name: Login to GitHub Container Registry
-              uses: docker/login-action@v1
+              uses: docker/login-action@v3
               with:
                   registry: ghcr.io
                   username: ${{ github.actor }}
@@ -47,13 +47,16 @@ jobs:
                     echo "is_latest=false" >> $GITHUB_ENV
                   fi
 
+            - name: Lowercase Repository Name
+              run: echo "lowercase_repo=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
             - name: Build and push image
-              uses: docker/build-push-action@v2
+              uses: docker/build-push-action@v5
               with:
                   context: .
                   file: ./Dockerfile
                   push: true
                   tags: |
-                      ghcr.io/${{ github.repository }}:${{ env.tag }}
-                      ${{ env.is_latest == 'true' && 'ghcr.io/${{ github.repository }}:latest' }}
+                      ghcr.io/${{ env.lowercase_repo }}:${{ env.tag }}
+                      ${{ env.is_latest == 'true' && 'ghcr.io/${{ env.lowercase_repo }}:latest' }}
                   platforms: linux/amd64,linux/arm64

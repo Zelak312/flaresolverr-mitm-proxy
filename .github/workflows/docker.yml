@@ -27,26 +27,30 @@ jobs:
                   username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Extract tag name
+            - name: Determine Tag Name
               id: tag_name
-              run: echo "##[set-output name=tag;]$(echo ${GITHUB_REF#refs/tags/})"
+              run: |
+                  if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+                    echo "::set-output name=tag::${{ github.event.inputs.tag }}"
+                  else
+                    echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+                  fi
 
             - name: Determine if latest tag
               id: latest_tag
               run: |
                   current_tag=${{ steps.tag_name.outputs.tag }}
-                  # Fetch all tags, include the current tag, filter out pre-release tags, then sort
                   all_tags=$(echo "$current_tag" && git tag -l | grep -v -E 'alpha|beta')
                   latest_stable_tag=$(echo "$all_tags" | sort -V | tail -n1)
                   if [[ "$current_tag" == "$latest_stable_tag" ]]; then
-                    echo "##[set-output name=is_latest;]true"
+                    echo "::set-output name=is_latest::true"
                   else
-                    echo "##[set-output name=is_latest;]false"
+                    echo "::set-output name=is_latest::false"
                   fi
 
             - name: Extract repository name
               id: repo_name
-              run: echo "##[set-output name=name;]$(echo ${GITHUB_REPOSITORY##*/})"
+              run: echo "::set-output name=name::$(echo ${GITHUB_REPOSITORY##*/})"
 
             - name: Build and push image
               uses: docker/build-push-action@v2

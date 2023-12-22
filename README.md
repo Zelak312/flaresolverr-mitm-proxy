@@ -52,6 +52,10 @@ To set the Authorization header value to `mytoken`. To add multiple headers, cha
 
 This also applies for POST requests (They are also in the query parameters)
 
+## How to send cookies
+
+Sending cookies is a bit different then headers. Flaresolverr already can pass cookies so flaresolverr-mitm doesn't integrates this, please see [the flaresolverr docs for cookies](https://github.com/FlareSolverr/FlareSolverr?tab=readme-ov-file#-requestget)
+
 ## Sending JSON in POST Request
 
 To send a JSON payload in a POST request, utilize the `$$post` keyword within the postData parameter.

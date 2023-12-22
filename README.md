@@ -6,6 +6,14 @@
 
 While Flaresolverr provides a proxy solution, it currently lacks support for headers and JSON payloads. To bridge this gap, Flaresolverr Mitm Proxy has been introduced. This utility allows users to include headers and send JSON, enhancing the overall capability of Flaresolverr.
 
+## How it works
+
+A request will be sent to flaresolverr, as usual, but the proxy url config will be set to point towards flaresolverr-mitm-proxy. What will happen is that the request will be proxied from flaresolverr to flaresolverr-mitm-proxy which will then send it to the website and the returned page will be sent back to flaresolverr for the cloudflare shenanigans
+
+**If you want to support my work**
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/zelak)
+
 ## Installation & Usage
 
 There are multiple ways to set up and run the Flaresolverr Mitm Proxy:
@@ -23,10 +31,6 @@ There are multiple ways to set up and run the Flaresolverr Mitm Proxy:
     - Clone this repository.
     - Install dependencies.
     - Execute using `mitmdump -s mitm.py`.
-
-## How it works
-
-A request will be sent to flaresolverr, as usual, but the proxy url config will be set to point towards flaresolverr-mitm-proxy. What will happen is that the request will be proxied from flaresolverr to flaresolverr-mitm-proxy which will then send it to the website and the returned page will be sent back to flaresolverr for the cloudflare shenanigans
 
 #### Without proxy
 

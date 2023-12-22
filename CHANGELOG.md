@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2023-12-22
+
+### Bug Fixes
+
+- Proxy configuration and doc
+- Curl example command so it's pastable in cli
+
+### Features
+
+- Add upstream proxy
+
+### Miscellaneous Tasks
+
+- How to send cookies
+- Adding buy me a coffee link
+- Move platforms to build for
+
 ## [1.0.2-beta] - 2023-12-07
 
 ### Miscellaneous Tasks

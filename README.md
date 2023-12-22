@@ -118,21 +118,22 @@ docker compose up -d
 2. Make a request to Flaresolverr:
 
 ```bash
-curl -L -X POST 'http://localhost:8191/v1'
-    -H 'Content-Type: application/json'
-    --data-raw '{
-        "cmd": "request.post",
-        "url": "https://httpbin.org/post?$$headers[]=Authorization:mytoken",
-        "maxTimeout": 60000,
-        "proxy": {
-            "url": "flaresolverr-mitm-proxy:8080"
-        },
-        "postData": "$$post=eyJ0ZXN0IjoibmljZSIsImFycmF5IjpbImxvbCJdLCJuZXN0ZWQiOnsieWVldCI6ICJvb2YifSwibnVtYmVyIjo0fQ=="
-     }'
+curl -L -X POST 'http://localhost:8191/v1' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "cmd": "request.post",
+    "url": "https://httpbin.org/post?$$headers[]=Authorization:mytoken",
+    "maxTimeout": 60000,
+    "proxy": {
+        "url": "flaresolverr-mitm-proxy:8080"
+    },
+    "postData": "$$post=eyJ0ZXN0IjoibmljZSIsImFycmF5IjpbImxvbCJdLCJuZXN0ZWQiOnsieWVldCI6ICJvb2YifSwibnVtYmVyIjo0fQ=="
+}'
 ```
 
 Note: It is important here that the proxy.url property is valid and points to the flaresolverr-mitm proxy with the correct port, the one shown in this example matches with the example docker-compose file if the services names haven't been altered and the two services are still in the same docker network. Make sure that it is right, it's crucial for this to work because flaresolverr will proxy the request to the flaresolverr-mitm which will do the changes needed
 
+This request will use httpbin.org which will return the everything from the post so you can see if it worked correctly.
 The response would look something like:
 
 ```json

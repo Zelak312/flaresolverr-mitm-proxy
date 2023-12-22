@@ -15,4 +15,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY mitm.py ./
 
 # Command to run mitmdump with the Python script when the container starts
-CMD ["mitmdump", "-s", "./mitm.py"]
+ADD entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]

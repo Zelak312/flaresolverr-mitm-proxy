@@ -1,5 +1,3 @@
-## This is still in BETA, all pull requests are appreciated
-
 # Flaresolverr Mitm Proxy
 
 ## Overview
@@ -15,7 +13,7 @@ There are multiple ways to set up and run the Flaresolverr Mitm Proxy:
 1. **Docker Compose**:
 
     - Refer to the provided `docker-compose.yml` as a sample setup.
-    - Note: When using the docker-compose.yml, avoid mapping ports directly. Instead, use the container image name and port 8080 for proxy settings in Flaresolverr. Ensure they are on the same Docker network.
+    - Note: When using the docker-compose.yml, avoid mapping ports directly. Instead, use the container image name and port 8080 for proxy settings in Flaresolverr. Ensure they are on the same Docker network. Mapping ports can still be used, I just prefer not to.
 
 2. **Docker**:
 
@@ -26,7 +24,21 @@ There are multiple ways to set up and run the Flaresolverr Mitm Proxy:
     - Install dependencies.
     - Execute using `mitmdump -s mitm.py`.
 
-### Working with Headers
+## How it works
+
+A request will be sent to flaresolverr, as usual, but the proxy url config will be set to point towards flaresolverr-mitm-proxy. What will happen is that the request will be proxied from flaresolverr to flaresolverr-mitm-proxy which will then send it to the website and the returned page will be sent back to flaresolverr for the cloudflare shenanigans
+
+#### Without proxy
+
+flaresolverr -> flaresolverr-mitm-proxy -> website
+
+#### With Proxy
+
+see [how to use a proxy example](#using-an-upstream-proxy)
+
+flaresolverr-> flaresolverr-mitm-proxy -> http proxy (optional) -> website
+
+## Working with Headers
 
 Headers set via special query parameters.
 
@@ -40,7 +52,7 @@ To set the Authorization header value to `mytoken`. To add multiple headers, cha
 
 This also applies for POST requests (They are also in the query parameters)
 
-### Sending JSON in POST Request
+## Sending JSON in POST Request
 
 To send a JSON payload in a POST request, utilize the `$$post` keyword within the postData parameter.
 
@@ -111,6 +123,8 @@ curl -L -X POST 'http://localhost:8191/v1'
      }'
 ```
 
+Note: It is important here that the proxy.url property is valid and points to the flaresolverr-mitm proxy with the correct port, the one shown in this example matches with the example docker-compose file if the services names haven't been altered and the two services are still in the same docker network. Make sure that it is right, it's crucial for this to work because flaresolverr will proxy the request to the flaresolverr-mitm which will do the changes needed
+
 The response would look something like:
 
 ```json
@@ -175,3 +189,17 @@ The response would look something like:
     }
 }
 ```
+
+## Using an upstream proxy
+
+Note: socks proxy are not currently supported, if it is desired with docker, please open an issue and I will gladly add it, if you are not using docker, you can setup proxychains (linux) to make this works, I have no alternatives for windows for now<br>see https://github.com/mitmproxy/mitmproxy/issues/211
+
+it is possible to make mitm use an upstream proxy. To make it do so, will depend how you start flaresolverr-mitm
+
+### Docker
+
+To use a http/https proxy using docker, you need to provide the PROXY env variable in this format `http://username:password@my-upstream-proxy:port`<br>if using docker-compose, it will need to be passed in the [environments properties](https://docs.docker.com/compose/environment-variables/set-environment-variables/)<br>for docker cli, it will need to be passed as the `-e` [parameter](https://docs.docker.com/engine/reference/commandline/run/#env)
+
+### manual python
+
+When running flaresolverr-mitm proxy, instead of `mitmdump -s mitm.py` the --upstream parameter can be added like so `mitmdump -s mitm.py --upstream http://username:password@my-upstream-proxy:port`

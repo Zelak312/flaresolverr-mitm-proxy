@@ -6,5 +6,6 @@ if [ -z "${PROXY}" ]; then
     mitmdump -s ./mitm.py
 else
     # PROXY is set, run mitmdump with the specified upstream proxy
-    mitmdump -s ./mitm.py --upstream ${PROXY}
+    echo "Running with proxy: ${PROXY}"
+    mitmdump -s ./mitm.py --mode upstream:${PROXY}
 fi

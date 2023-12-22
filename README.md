@@ -210,4 +210,4 @@ To use a http/https proxy using docker, you need to provide the PROXY env variab
 
 ### manual python
 
-When running flaresolverr-mitm proxy, instead of `mitmdump -s mitm.py` the --upstream parameter can be added like so `mitmdump -s mitm.py --upstream http://username:password@my-upstream-proxy:port`
+When running flaresolverr-mitm proxy, instead of `mitmdump -s mitm.py` the --mode parameter can be added like so `mitmdump -s mitm.py --mode upstream:http://username:password@my-upstream-proxy:port`

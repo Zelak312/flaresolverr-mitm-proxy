@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2024-01-10
+
+### Bug Fixes
+
+- Auth for upstream proxy needs to be passed in an other parameter of mitmdump
+
 ## [1.0.0] - 2023-12-22
 
 ### Bug Fixes

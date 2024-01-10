@@ -201,14 +201,19 @@ The response would look something like:
 
 ## Using an upstream proxy
 
-Note: socks proxy are not currently supported, if it is desired with docker, please open an issue and I will gladly add it, if you are not using docker, you can setup proxychains (linux) to make this works, I have no alternatives for windows for now<br>see https://github.com/mitmproxy/mitmproxy/issues/211
+Note: socks proxy are not currently supported, if it is desired with docker, please open an issue and I will gladly add it, if you are not using docker, you can setup proxychains (linux) to make this works, I have no alternatives for windows for now<br>
+see https://github.com/mitmproxy/mitmproxy/issues/211
 
 it is possible to make mitm use an upstream proxy. To make it do so, will depend how you start flaresolverr-mitm
 
 ### Docker
 
-To use a http/https proxy using docker, you need to provide the PROXY env variable in this format `http://username:password@my-upstream-proxy:port`<br>if using docker-compose, it will need to be passed in the [environments properties](https://docs.docker.com/compose/environment-variables/set-environment-variables/)<br>for docker cli, it will need to be passed as the `-e` [parameter](https://docs.docker.com/engine/reference/commandline/run/#env)
+To use a http/https proxy using docker, you need to provide the `PROXY` env variable in this format `http://my-upstream-proxy:port`<br>
+if using docker-compose, it will need to be passed in the [environments properties](https://docs.docker.com/compose/environment-variables/set-environment-variables/)<br>
+for docker cli, it will need to be passed as the `-e` [parameter](https://docs.docker.com/engine/reference/commandline/run/#env)<br>
+If your proxy needs auth, you need to use the `PROXY_AUTH` env variable to pass in `username:password` ex: `PROXY_AUTH=username:password`
 
 ### manual python
 
-When running flaresolverr-mitm proxy, instead of `mitmdump -s mitm.py` the --mode parameter can be added like so `mitmdump -s mitm.py --mode upstream:http://username:password@my-upstream-proxy:port`
+When running flaresolverr-mitm proxy, instead of `mitmdump -s mitm.py` the --mode parameter can be added like so `mitmdump -s mitm.py --mode upstream:http://my-upstream-proxy:port`<br>
+If your proxy needs auth, the `--upstream-auth` parameter, ex: `--upstream-auth username:password`

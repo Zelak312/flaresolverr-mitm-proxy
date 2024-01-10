@@ -5,6 +5,9 @@ services:
     image: ghcr.io/zelak312/flaresolverr-mitm-proxy:v1.0.0
     container_name: flaresolverr-mitm-proxy
     restart: unless-stopped
+    environment:
+      - PROXY=http://localhost:8090
+      - PROXY_AUTH=user:pass
 
   flaresolverr:
     # DockerHub mirror flaresolverr/flaresolverr:latest

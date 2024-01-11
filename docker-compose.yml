@@ -2,7 +2,7 @@
 version: "2.1"
 services:
   flaresolverr-mitm-proxy:
-    image: ghcr.io/zelak312/flaresolverr-mitm-proxy:v1.0.0
+    image: ghcr.io/zelak312/flaresolverr-mitm-proxy:latest
     container_name: flaresolverr-mitm-proxy
     restart: unless-stopped
     environment:

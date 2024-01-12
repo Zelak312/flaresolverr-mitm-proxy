@@ -23,6 +23,7 @@ class FlaresolverrProxy:
 
                 [key, value] = header.split(header_split_token, 1)
                 ctx.log.info(f"Setting header {key} to {value}")
+                flow.request.headers.pop(key, None)
                 flow.request.headers[key] = value
 
     def handle_post_json(self, flow):

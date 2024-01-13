@@ -144,7 +144,7 @@ The response would look something like:
     "endTimestamp": 1691721665638,
     "version": "3.3.2",
     "solution": {
-        "url": "https://httpbin.org/post?$$headers[]=Authorization:mytoken",
+        "url": "https://httpbin.org/post",
         "status": 200,
         "cookies": [],
         "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
@@ -189,7 +189,7 @@ The response would look something like:
                             },
                             "number": 4
                         },
-                        "url": "https://httpbin.org/post?$$headers[]=Authorization:mytoken"
+                        "url": "https://httpbin.org/post"
                     }
                 </pre>
             </body>

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2024-01-13
+
+### Features
+
+- Remove headers from query (#12)
+
+### Miscellaneous Tasks
+
+- Change example docker-compose to use latest version
+
 ## [1.0.1] - 2024-01-10
 
 ### Bug Fixes

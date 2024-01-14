@@ -1,4 +1,3 @@
-# addon_example.py
 import os
 import json
 import base64
@@ -9,7 +8,6 @@ special_prefix_token = os.environ.get("SPECIAL_PREFIX_TOKEN", "$$")
 header_split_token = os.environ.get("HEADER_SPLIT_TOKEN", ":")
 header_token = f"{special_prefix_token}headers[]"
 post_token = f"{special_prefix_token}post"
-
 
 class FlaresolverrProxy:
     def handle_headers(self, flow):
@@ -75,7 +73,6 @@ class FlaresolverrProxy:
         # Handle post json if needed
         if flow.request.method == "POST":
             self.handle_post_json(flow)
-
 
 addons = [
     FlaresolverrProxy()

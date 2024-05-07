@@ -11,21 +11,17 @@ post_token = f"{special_prefix_token}post"
 
 class FlaresolverrProxy:
     def handle_headers(self, flow):
-        ctx.log.info("Handling headers")
         if header_token in flow.request.query:
-            ctx.log.info(f"Found {header_token} in query")
             headers = flow.request.query.get_all(header_token)
             for header in headers:
                 if not header_split_token in header:
                     continue
 
                 [key, value] = header.split(header_split_token, 1)
-                ctx.log.info(f"Setting header {key} to {value}")
                 flow.request.headers[key] = value
             flow.request.query.pop(header_token, None)
 
     def handle_post_json(self, flow):
-        ctx.log.info("Handling post json")
         # Parse the post data
         try:
             form_data = urllib.parse.parse_qs(flow.request.get_text())
@@ -33,10 +29,7 @@ class FlaresolverrProxy:
             ctx.log.error(f"Failed to parse form data: {e}")
             return
 
-        ctx.log.info(f"Request text: {form_data}")
         if post_token in form_data:
-            ctx.log.info(f"Found {post_token} in query")
-
             # Check if the form data contains the post token
             if not post_token in form_data:
                 return
@@ -51,14 +44,12 @@ class FlaresolverrProxy:
                 decoded_string = base64.b64decode(
                     form_data[post_token][0]).decode("utf-8")
             except Exception as e:
-                ctx.log.error(f"Failed to decode post data: {e}")
                 return
 
             # Try to parse the post data as JSON
             try:
                 post_data = json.loads(decoded_string)
             except Exception as e:
-                ctx.log.error(f"Failed to parse post data: {e}")
                 return
 
             # Change header to JSON
@@ -67,7 +58,6 @@ class FlaresolverrProxy:
             flow.request.set_text(json.dumps(post_data))
 
     def request(self, flow):
-        ctx.log.info("Handling request")
         # Handle headers
         self.handle_headers(flow)
         # Handle post json if needed

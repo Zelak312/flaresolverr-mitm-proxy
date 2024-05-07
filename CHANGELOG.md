@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2024-05-07
+
+### Bug Fixes
+
+- Issues with requested library versions
+
+### Miscellaneous Tasks
+
+- Remove "example.addon" head comment (#14)
+- Return headers[] in url flaresolver response (#15)
+- Remove logging
+
 ## [1.0.2] - 2024-01-13
 
 ### Features

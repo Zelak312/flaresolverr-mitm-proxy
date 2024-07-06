@@ -29,7 +29,7 @@ pyperclip==1.8.2
 ruamel.yaml==0.17.32
 ruamel.yaml.clib==0.2.7
 sortedcontainers==2.4.0
-tornado==6.3.3
+tornado==6.4.1
 typing-extensions==4.4.0
 urwid==2.1.2
 Werkzeug==3.0.3

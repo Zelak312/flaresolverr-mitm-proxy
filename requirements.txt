@@ -1,6 +1,6 @@
 asgiref==3.5.2
 Brotli==1.0.9
-certifi==2023.7.22
+certifi==2024.7.4
 cffi==1.15.1
 click==8.1.6
 cryptography==42.0.7

@@ -12,7 +12,7 @@
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
-    "git-cliff": "^1.4.0",
+    "git-cliff": "^2.4.0",
     "lefthook": "^1.5.4"
   }
 }

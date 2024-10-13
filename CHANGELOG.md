@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.5] - 2024-10-13
+
+### Miscellaneous Tasks
+
+- Bumping git-cliff to v2
+- Update deps to fix issues + add test cmd for quick testing
+
+### Chore
+
+- Bump cryptography from 42.0.7 to 43.0.1
+
 ## [1.0.4] - 2024-08-06
 
 ### Miscellaneous Tasks

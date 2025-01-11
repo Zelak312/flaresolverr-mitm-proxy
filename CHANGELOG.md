@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.6] - 2025-01-11
+
+### Miscellaneous Tasks
+
+- Bump mitm proxy version
+
+### Chore
+
+- Bump jinja2 from 3.1.4 to 3.1.5
+- Bump tornado from 6.4.1 to 6.4.2
+- Bump werkzeug from 3.0.3 to 3.0.6
+
 ## [1.0.5] - 2024-10-13
 
 ### Miscellaneous Tasks

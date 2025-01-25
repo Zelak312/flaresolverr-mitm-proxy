@@ -6,8 +6,10 @@ services:
     container_name: flaresolverr-mitm-proxy
     restart: unless-stopped
     environment:
-      - PROXY=http://localhost:8191
+      - PROXY=http://localhost:8080
       - PROXY_AUTH=user:pass
+    ports:
+      - 8080:8080
 
   flaresolverr:
     # DockerHub mirror flaresolverr/flaresolverr:latest

@@ -125,7 +125,7 @@ curl -L -X POST 'http://localhost:8191/v1' \
     "url": "https://httpbin.org/post?$$headers[]=Authorization:mytoken",
     "maxTimeout": 60000,
     "proxy": {
-        "url": "flaresolverr-mitm-proxy:8080"
+        "url": "localhost:8080"
     },
     "postData": "$$post=eyJ0ZXN0IjoibmljZSIsImFycmF5IjpbImxvbCJdLCJuZXN0ZWQiOnsieWVldCI6ICJvb2YifSwibnVtYmVyIjo0fQ=="
 }'

@@ -6,7 +6,7 @@ services:
     container_name: flaresolverr-mitm-proxy
     restart: unless-stopped
     environment:
-      - PROXY=http://localhost:8090
+      - PROXY=http://localhost:8191
       - PROXY_AUTH=user:pass
 
   flaresolverr:

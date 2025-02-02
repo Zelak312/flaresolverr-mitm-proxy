@@ -6,8 +6,8 @@ services:
     container_name: flaresolverr-mitm-proxy
     restart: unless-stopped
     environment:
-      - PROXY=http://localhost:8080
-      - PROXY_AUTH=user:pass
+      - PROXY=http://localhost:8181 # Optional: only use if you want to use an upstream proxy
+      - PROXY_AUTH=user:pass # Optional: only use if you have an upstream proxy with auth
     ports:
       - 8080:8080
 

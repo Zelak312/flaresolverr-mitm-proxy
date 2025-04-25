@@ -5,7 +5,7 @@ cffi==1.15.1
 click==8.1.6
 cryptography==43.0.1
 Flask==3.0.3
-h11==0.14.0
+h11==0.16.0
 h2==4.1.0
 hpack==4.0.0
 hyperframe==6.0.1

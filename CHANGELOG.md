@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.7] - 2025-04-26
+
+### Bug Fixes
+
+- Docker compose example using wrong port for PROXY variable
+- Working example
+
+### Chore
+
+- Bump cryptography from 43.0.1 to 44.0.1
+- Bump jinja2 from 3.1.5 to 3.1.6
+- Revert "Bump h11 from 0.14.0 to 0.16.0" (Need new mitmproxy release)
+- Upgrade deps and python version for docker image to 3.12
+- Bump h11 from 0.14.0 to 0.16.0
+
 ## [1.0.6] - 2025-01-11
 
 ### Miscellaneous Tasks

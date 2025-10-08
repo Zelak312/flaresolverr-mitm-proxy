@@ -36,7 +36,7 @@ ruamel.yaml==0.18.10
 ruamel.yaml.clib==0.2.12
 service-identity==24.2.0
 sortedcontainers==2.4.0
-tornado==6.4.2
+tornado==6.5
 typing_extensions==4.13.2
 urwid==2.6.16
 wcwidth==0.2.13

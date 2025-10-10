@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.7] - 2025-04-26
+## [1.0.8] - 2025-10-10
 
 ### Bug Fixes
 
@@ -11,10 +11,23 @@ All notable changes to this project will be documented in this file.
 
 ### Chore
 
+- Fix dependency errors
+
+### Miscellaneous Tasks
+
+- "chore(deps): bump h11 from 0.14.0 to 0.16.0"
+
+### Chore
+
 - Bump cryptography from 43.0.1 to 44.0.1
 - Bump jinja2 from 3.1.5 to 3.1.6
-- Revert "Bump h11 from 0.14.0 to 0.16.0" (Need new mitmproxy release)
+- Bump h11 from 0.14.0 to 0.16.0
 - Upgrade deps and python version for docker image to 3.12
+- Bump h11 from 0.14.0 to 0.16.0
+- Bump flask from 3.1.0 to 3.1.1
+- Bump h2 from 4.1.0 to 4.3.0
+- Bump mitmproxy from 11.1.3 to 12.1.2
+- Bump tornado from 6.4.2 to 6.5
 - Bump h11 from 0.14.0 to 0.16.0
 
 ## [1.0.6] - 2025-01-11

@@ -9,6 +9,7 @@ header_split_token = os.environ.get("HEADER_SPLIT_TOKEN", ":")
 header_token = f"{special_prefix_token}headers[]"
 post_token = f"{special_prefix_token}post"
 
+
 class FlaresolverrProxy:
     def handle_headers(self, flow):
         if header_token in flow.request.query:
@@ -49,13 +50,17 @@ class FlaresolverrProxy:
             # Try to parse the post data as JSON
             try:
                 post_data = json.loads(decoded_string)
+                # Change header to JSON
+                flow.request.headers["Content-Type"] = "application/json"
+                # Set the JSON data as the request body
+                flow.request.set_text(json.dumps(post_data))
+            except json.decoder.JSONDecodeError:
+                # Change header to plain text
+                flow.request.headers["Content-Type"] = "text/plain"
+                # Set the plain text as the request body
+                flow.request.set_text(decoded_string)
             except Exception as e:
                 return
-
-            # Change header to JSON
-            flow.request.headers["Content-Type"] = "application/json"
-            # Set the JSON data as the request body
-            flow.request.set_text(json.dumps(post_data))
 
     def request(self, flow):
         # Handle headers
@@ -63,6 +68,7 @@ class FlaresolverrProxy:
         # Handle post json if needed
         if flow.request.method == "POST":
             self.handle_post_json(flow)
+
 
 addons = [
     FlaresolverrProxy()

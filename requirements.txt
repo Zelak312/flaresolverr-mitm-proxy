@@ -25,7 +25,7 @@ mitmproxy_rs==0.12.7
 msgpack==1.1.0
 passlib==1.7.4
 publicsuffix2==2.20191221
-pyasn1==0.6.1
+pyasn1==0.6.2
 pyasn1_modules==0.4.2
 pycparser==2.22
 pylsqpack==0.3.20

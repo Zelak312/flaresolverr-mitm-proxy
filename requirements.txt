@@ -19,7 +19,7 @@ Jinja2==3.1.6
 kaitaistruct==0.10
 ldap3==2.9.1
 MarkupSafe==3.0.2
-mitmproxy==12.1.2
+mitmproxy==12.2.1
 mitmproxy_linux==0.12.7
 mitmproxy_rs==0.12.7
 msgpack==1.1.0
@@ -42,4 +42,4 @@ urwid==2.6.16
 wcwidth==0.2.13
 Werkzeug==3.1.5
 wsproto==1.2.0
-zstandard==0.23.0
+zstandard==0.25.0
